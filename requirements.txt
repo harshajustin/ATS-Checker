@@ -1,8 +1,4 @@
-langchain
-langchain-community
-langchain-groq
-unstructured
-selenium
 streamlit
-pandas
+google-generativeai
 python-dotenv
+pdf2image
