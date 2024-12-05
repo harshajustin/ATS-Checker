@@ -2,9 +2,10 @@ from dotenv import load_dotenv
 import streamlit as st
 import os
 import google.generativeai as genai
+import base64
+import io
+import pdf2image
 
-from gemini_response import get_gemini_response
-from process_pdf import process_uploaded_pdf
 
 # Load environment variables
 load_dotenv()
@@ -14,6 +15,40 @@ API_KEY = os.getenv("GOOGLE_API_KEY")
 if not API_KEY:
     raise ValueError("Google API Key not found. Please set it in the .env file.")
 genai.configure(api_key=API_KEY)
+
+def process_uploaded_pdf(uploaded_file):
+    """
+    Converts uploaded PDF into base64-encoded image parts for generative AI processing.
+    """
+    if not uploaded_file:
+        raise FileNotFoundError("No file uploaded.")
+    try:
+        # Convert PDF to images
+        images = pdf2image.convert_from_bytes(uploaded_file.read())
+        first_page = images[0]
+
+        # Convert the first page to a base64-encoded JPEG
+        img_byte_arr = io.BytesIO()
+        first_page.save(img_byte_arr, format="JPEG")
+        img_byte_arr = img_byte_arr.getvalue()
+
+        return [{
+            "mime_type": "image/jpeg",
+            "data": base64.b64encode(img_byte_arr).decode()
+        }]
+    except Exception as e:
+        raise ValueError(f"Error processing PDF: {e}")
+
+def get_gemini_response(input_text, pdf_content, prompt):
+    """
+    Sends the input text, PDF content, and prompt to the Gemini generative AI model.
+    """
+    try:
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content([input_text, pdf_content[0], prompt])
+        return response.text
+    except Exception as e:
+        return f"Error generating response: {e}"
 
 def create_streamlit_ui():
     """

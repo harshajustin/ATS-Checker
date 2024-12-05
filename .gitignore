@@ -1,15 +1,36 @@
-
 # Python bytecode files
+__pycache__/
 *.pyc
 *.pyo
+*.pyd
 
-# Virtual environment directories
-.venv/
-__pycache__/
+# Virtual environments
+env/
+venv/
+.env/
 
-# IDE/editor files
-.vscode/
+# Node.js dependencies
+node_modules/
+
+# Python-related IDE files
 .idea/
+.vscode/
 
-# Environment variables
-.env
+# Streamlit-related
+*.db
+*.log
+
+# Docker-related
+Dockerfile*
+.dockerignore
+*.tar.gz
+
+# Heroku-related
+*.env
+*.swp
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
