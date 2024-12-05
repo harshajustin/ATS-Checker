@@ -20,10 +20,6 @@ node_modules/
 *.db
 *.log
 
-# Docker-related
-Dockerfile*
-.dockerignore
-*.tar.gz
 
 # Heroku-related
 *.env
