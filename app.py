@@ -11,7 +11,7 @@ import pdf2image
 load_dotenv()
 
 # Configure generative AI
-API_KEY = os.getenv("GOOGLE_API_KEY")
+API_KEY = os.getenv("key")
 if not API_KEY:
     raise ValueError("Google API Key not found. Please set it in the .env file.")
 genai.configure(api_key=API_KEY)
