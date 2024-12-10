@@ -3,12 +3,9 @@ FROM python:3.10-slim-buster
 
 # Install system dependencies for the application
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    poppler-utils \
-    libglib2.0-0 \
-    libsm6 \
-    libxrender1 \
-    libxext6 \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+  poppler-utils \
+  && apt-get clean && rm -rf /var/lib/apt/lists/* \
+  dnsutils
 
 # Set the working directory
 WORKDIR /app
@@ -19,6 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application source code
 COPY . .
+
+COPY .env .env
 
 # Expose the Streamlit default port
 EXPOSE 8501
